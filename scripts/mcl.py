@@ -128,29 +128,3 @@ class EstimationAgent(Agent):
         s = "({:.2f}, {:.2f}, {})".format(x, y, int(t*180/math.pi)%360)
         elems.append(ax.text(x, y+0.1, s, fontsize=8))
 
-
-# In[5]:
-
-
-def trial():
-    time_interval = 0.1
-    world = World(30, time_interval, debug=False)
-    
-    # 地図を作成してランドマークを追加
-    m = Map()
-    for ln in [(-4, 2), (2, -3), (3, 3)]:
-        m.append_landmark(LandMark(*ln))
-    world.append(m)
-    
-    # ロボットを作る
-    initial_pose = np.array([0, 0, 0]).T
-    estimator = Mcl(m, initial_pose, 100)                                        # パーティクルフィルタを作る 地図を持たせる
-    circling = EstimationAgent(time_interval, 0.2, 10.0/180*math.pi, estimator)     # estimatorを渡す
-    r = Robot(initial_pose, sensor=Camera(m), agent=circling, color="red")
-    world.append(r)
-
-    # アニメーション実行
-    world.draw()
-    
-trial()
-
